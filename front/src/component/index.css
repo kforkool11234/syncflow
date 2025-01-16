@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+    height: 100%; /* Ensure html and body take full height */
+    margin: 0; /* Remove default margin */
+    background-color: rgba(66, 66, 66, 1);
+}
+
+.whole {
+    position: relative;
+    background-color: rgba(66, 66, 66, 1);
+    display: grid;
+    grid-template-columns: 15% 1fr;
+    grid-template-rows: auto 1fr; /* Change to auto for header */
+    overflow-y: hidden;
+}
+
+.sidebar {
+    position: fixed; /* Keep sidebar fixed */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(47, 47, 47, 1);
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+}
+
+
+.main {
+    position: fixed; /* Fixed at the top */
+    top: 0;
+    margin-left: 70px;
+    width: 100%; /* Spans full width */
+    height: 60px; /* Adjust height as needed */
+    background-color: rgba(66, 66, 66, 1); /* Match background */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: "Rubik", sans-serif;
+    font-weight: 500;
+    padding-bottom: 10px;
+}
+
+.item {
+    margin: 20px;
+}
+
+.svg-icon {
+    transform: scale(2); /* Scale by a factor of 2 */
+}
+
+.content {
+    
+    display: flex;
+    grid-column: 2 / 3; 
+    grid-row: 2 / 3; 
+    height:100vh;
+    overflow-y: auto; 
+    padding-top: 60px; /* Match the height of `.main` */
+}
