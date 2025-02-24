@@ -31,19 +31,19 @@ html, body {
 
 
 .main {
-    position: fixed; /* Fixed at the top */
-    top: 0;
-    margin-left: 70px;
-    width: 100%; /* Spans full width */
-    height: 60px; /* Adjust height as needed */
-    background-color: rgba(66, 66, 66, 1); /* Match background */
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    font-family: "Rubik", sans-serif;
-    font-weight: 500;
-    padding-bottom: 10px;
+  position: fixed; /* Fixed at the top */
+  top: 0;
+  grid-column: 2/3;
+  height: 60px; /* Adjust height as needed */
+  background-color: rgba(66, 66, 66, 1); /* Match background */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* Places children at opposite ends */
+  font-family: "Rubik", sans-serif;
+  font-weight: 500;
+  padding-bottom: 10px;
 }
+
 
 .item {
     margin: 20px;
