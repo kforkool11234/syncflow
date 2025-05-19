@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Paper from "@mui/material/Paper";
-import {jwtDecode} from "jwt-decode"; // Ensure this is installed and imported correctly
+import {jwtDecode} from 'jwt-decode';
 import axios from "axios";
-import { Link } from "react-router-dom"; // Import Link from React Router
+import { Link, useNavigate } from "react-router-dom";
 
 function Chat() {
   const [arr, setArr] = useState([]);
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
-  function getUsernameFromToken(token) {
+  function getUserIdFromToken(token) {
     if (!token) {
       console.log("No token found");
       return null;
@@ -18,15 +19,14 @@ function Chat() {
   }
 
   useEffect(() => {
-    const username = getUsernameFromToken(token);
-    if (username) {
+    const userId = getUserIdFromToken(token);
+    if (userId) {
       axios
         .get("http://localhost:5000/chat", {
-          headers: { Authorization: `Bearer ${token}` }, // Include the token here
+          headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
           setArr(res.data);
-          console.log(res.data);
         })
         .catch((err) => {
           console.log("Error occurred: ", err);
@@ -34,9 +34,23 @@ function Chat() {
     }
   }, [token]);
 
+  // New: Handle chat click, delete notifications then navigate
+  const handleChatClick = async (chatId) => {
+    try {
+      await axios.delete(`http://localhost:5000/notifications/chat/${chatId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });      
+      // After deletion, navigate to the chat page
+      navigate(`/chat/${chatId}`);
+    } catch (error) {
+      console.error("Failed to delete notifications for chat:", error);
+      // Still navigate even if delete fails (optional)
+      navigate(`/chat/${chatId}`);
+    }
+  };
+
   return (
     <div className="content flex-col items-center">
-      {/* Search Input */}
       <div className="flex justify-center items-center w-11/12 mt-5">
         <input
           type="text"
@@ -44,25 +58,44 @@ function Chat() {
           className="border border-black bg-transparent p-2 rounded-full focus:outline-none focus:ring focus:ring-blue-500 w-11/12"
         />
       </div>
-      {/* Displaying chat items */}
+
       {arr.map((item, index) => (
-        <Link to={`/chat/${item._id}`} key={index} className="w-11/12">
-          {console.log(item)}
+        // Remove Link and handle navigation manually after delete
+        <div
+          key={index}
+          className="w-11/12 cursor-pointer"
+          onClick={() => handleChatClick(item._id)}
+        >
           <Paper
             elevation={8}
-            style={{  height: "100px", padding: "10px" }}
-            className="mt-10 hover:bg-gray-200 transition duration-200 hover:scale-105"
+            style={{ height: "100px", padding: "10px" }}
+            className="mt-10 hover:bg-gray-200 transition duration-200 hover:scale-105 relative"
           >
             <div className="flex flex-col">
-              {/* Name in Bold */}
-              <span className="font-bold text-lg">{item.chatName}</span>
-              {/* Latest Message */}
-              {console.log(item.latestMessage)}
-              {item.latestMessage && <span className="text-sm text-gray-600">{item.latestMessage.name}:{item.latestMessage.content}</span>}
-              
+              <div className="flex items-center">
+                <span className="font-bold text-lg">{item.chatName}</span>
+                {item.hasNotification && (
+                  <span
+                    style={{
+                      display: "inline-block",
+                      width: 12,
+                      height: 12,
+                      backgroundColor: "green",
+                      borderRadius: "50%",
+                      marginLeft: 8,
+                    }}
+                    title="New messages"
+                  />
+                )}
+              </div>
+              {item.latestMessage && (
+                <span className="text-sm text-gray-600">
+                  {item.latestMessage.name}: {item.latestMessage.content}
+                </span>
+              )}
             </div>
           </Paper>
-        </Link>
+        </div>
       ))}
     </div>
   );

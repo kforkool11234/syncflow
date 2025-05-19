@@ -12,20 +12,19 @@ function Header() {
   };
 
   return (
-    <div className="main flex items-center p-4 w-full">
+    <div className="flex justify-between items-center p-4 bg-gray-100 shadow-md">
       {/* "SYNCFLOW" on the left */}
-      <h2 className="mt-3 text-2xl font-extrabold">SYNCFLOW</h2>
-      
+      <h2 className="text-2xl font-extrabold text-gray-800">SYNCFLOW</h2>
+
       {/* Right side: either the user icon or login/signup links */}
       {token ? (
         <div className="relative">
           <svg
-            className="mt-1 text-gray-800 dark:text-white cursor-pointer"
-            aria-hidden="true"
+            className="text-gray-800 dark:text-white cursor-pointer"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            width="50"
-            height="50"
+            width="40"
+            height="40"
             fill="currentColor"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >

@@ -7,7 +7,13 @@ import { jwtDecode } from 'jwt-decode';
 import DatePicker from "react-datepicker"; // Import DatePicker
 import "react-datepicker/dist/react-datepicker.css"; // Import styles for DatePicker
 
-const socket = io('http://localhost:5000');
+
+const token = localStorage.getItem("token");
+const socket = io('http://localhost:5000', {
+  auth: {
+    token: token, // or just the user ID if you want
+  }
+})
 
 const ChatUI = () => {
   const params = useParams();
@@ -22,7 +28,7 @@ const ChatUI = () => {
   const [taskDescription, setTaskDescription] = useState(''); // Task description
   const [isAdmin, setIsAdmin] = useState(false); // Check if user is admin
   
-  const token = localStorage.getItem("token");
+ 
 
   function get_idFromToken(token) {
     if (!token) {

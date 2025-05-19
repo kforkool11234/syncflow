@@ -19,7 +19,7 @@ function Pinfo() {
         const id = params.pid;
         if (id) {
             axios
-                .get(`http://localhost:5000/pinfo?projecid=${id}`)
+                .get(`http://localhost:5000/project/pinfo?projecid=${id}`)
                 .then((res) => {
                     setArr(res.data);
                     console.log(res.data);
