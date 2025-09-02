@@ -19,52 +19,80 @@ function Signup() {
     };
 
     return (
-        <div className=" content flex items-center justify-center min-h-screen bg-gray-100">
-            <form className="bg-gray-800 p-8 rounded-lg shadow-md max-w-sm w-full" onSubmit={handleSignup}>
-                <h2 className="text-2xl font-bold text-center mb-6">Signup</h2>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="username">Username</label>
-                    <input
-                        type="text"
-                        id="username"
-                        placeholder="Enter your username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                        className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+        <div className="content flex items-center justify-center min-h-screen">
+            <div className="w-full max-w-md">
+                <div className="bg-white/95 backdrop-blur-lg p-8 rounded-3xl shadow-2xl border border-white/20">
+                    <div className="text-center mb-8">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                            Join SyncFlow
+                        </h1>
+                        <p className="text-gray-600">Create your account to get started</p>
+                    </div>
+
+                    <form onSubmit={handleSignup} className="space-y-6">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="username">
+                                Username
+                            </label>
+                            <input
+                                type="text"
+                                id="username"
+                                placeholder="Choose a username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                                className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 bg-gray-50/50 hover:bg-white"
+                            />
+                        </div>
+                        
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="displayName">
+                                Display Name
+                            </label>
+                            <input
+                                type="text"
+                                id="displayName"
+                                placeholder="Your full name"
+                                value={displayName}
+                                onChange={(e) => setDisplayName(e.target.value)}
+                                required
+                                className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 bg-gray-50/50 hover:bg-white"
+                            />
+                        </div>
+                        
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="password">
+                                Password
+                            </label>
+                            <input
+                                type="password"
+                                id="password"
+                                placeholder="Create a secure password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 bg-gray-50/50 hover:bg-white"
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold py-3 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                        >
+                            Create Account
+                        </button>
+                    </form>
+
+                    <div className="mt-6 text-center">
+                        <p className="text-gray-600">
+                            Already have an account?{' '}
+                            <a href="/login" className="text-indigo-600 hover:text-indigo-700 font-medium transition-colors duration-200">
+                                Sign in here
+                            </a>
+                        </p>
+                    </div>
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Enter your password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                </div>
-                <div className="mb-6">
-                    <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="displayName">Display Name</label>
-                    <input
-                        type="text"
-                        id="displayName"
-                        placeholder="Enter your display name"
-                        value={displayName}
-                        onChange={(e) => setDisplayName(e.target.value)}
-                        required
-                        className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                </div>
-                <button
-                    type="submit"
-                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded transition duration-200"
-                >
-                    Signup
-                </button>
-            </form>
+            </div>
         </div>
     );
 }
