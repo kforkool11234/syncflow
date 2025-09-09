@@ -141,6 +141,157 @@ html, body {
     background: rgba(99, 102, 241, 0.5);
 }
 
+/* Enhanced component styles */
+.task-card, .chat-card, .project-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.task-card:hover, .chat-card:hover, .project-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Calendar enhancements */
+.rbc-calendar {
+    background: transparent;
+    border: none;
+}
+
+.rbc-month-view {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.rbc-header {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-bottom: 1px solid #e2e8f0;
+    padding: 12px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.rbc-date-cell {
+    padding: 8px;
+    border-right: 1px solid #f1f5f9;
+}
+
+.rbc-event {
+    border-radius: 8px;
+    border: none;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.rbc-day-bg:hover {
+    background-color: rgba(99, 102, 241, 0.05);
+}
+
+/* Enhanced animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-slide-in-right {
+    animation: slideInRight 0.4s ease-out forwards;
+}
+
+/* Glassmorphism enhancements */
+.glass-card {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.glass-card:hover {
+    background: rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Enhanced gradients */
+.gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gradient-secondary {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.gradient-success {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.gradient-warning {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+/* Enhanced focus states */
+.enhanced-focus:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    border-color: #6366f1;
+}
+
+/* Loading states */
+.loading-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Enhanced scrollbars for all components */
+.enhanced-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.enhanced-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.enhanced-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.3);
+    border-radius: 4px;
+}
+
+.enhanced-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(99, 102, 241, 0.5);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .whole {
@@ -158,5 +309,13 @@ html, body {
     .content {
         padding-left: 1rem;
         padding-right: 1rem;
+    }
+    
+    .task-card, .chat-card, .project-card {
+        margin-bottom: 1rem;
+    }
+    
+    .glass-card {
+        margin: 0.5rem;
     }
 }
