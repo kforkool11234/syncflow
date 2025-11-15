@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 import app from './app.js';
 import { connectDB } from './config/db.js';
 import { socketHandler } from './socket/index.js';
-
+import cors from "cors"
 connectDB();
 app.use(cors({
   origin: process.env.CLIENT_URL
