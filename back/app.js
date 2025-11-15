@@ -11,7 +11,9 @@ import otherroute from "./routes/others.js";
 dotenv.config();
 const app = express();
 app.use(bodyParser.json());
-app.use(Cors());
+app.use(Cors({
+  origin: process.env.CLIENT_URL
+}));
 
 // Routes
 app.use('/registration/', userroute);
