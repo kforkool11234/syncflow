@@ -9,7 +9,7 @@ import "react-datepicker/dist/react-datepicker.css"; // Import styles for DatePi
 
 
 const token = localStorage.getItem("token");
-const socket = io('http://localhost:5000', {
+const socket = io(`${process.env.REACT_APP_API_URL}`, {
   auth: {
     token: token, // or just the user ID if you want
   }
@@ -61,7 +61,7 @@ const ChatUI = () => {
     
     // Fetch initial messages from the backend
     console.log(channel)
-    axios.get(`http://localhost:5000/chat/getchat?chatid=${id}&channel=${channel}`, {
+    axios.get(`${process.env.REACT_APP_API_URL}/chat/getchat?chatid=${id}&channel=${channel}`, {
       headers: { Authorization: `Bearer ${token}` },
     }).then((res) => {
       setMessages(res.data.message); // Load previous messages (tasks or regular)

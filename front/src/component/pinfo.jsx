@@ -19,7 +19,7 @@ function Pinfo() {
         const id = params.pid;
         if (id) {
             axios
-                .get(`http://localhost:5000/project/pinfo?projecid=${id}`)
+                .get(`${process.env.REACT_APP_API_URL}/project/pinfo?projecid=${id}`)
                 .then((res) => {
                     setArr(res.data);
                     console.log(res.data);
@@ -43,7 +43,7 @@ function Pinfo() {
             deadline: task.deadline,
         };
 
-        axios.patch(`http://localhost:5000/project/addtask/${arr._id}`, newTask, {
+        axios.patch(`${process.env.REACT_APP_API_URL}/project/addtask/${arr._id}`, newTask, {
             headers: { Authorization: `Bearer ${token}` }
         })
         setShowAddTask(!showAddTask)
@@ -60,7 +60,7 @@ function Pinfo() {
             role: team.role,
         };
 
-        axios.patch(`http://localhost:5000/project/addteam/${arr._id}`, newTeam, {
+        axios.patch(`${process.env.REACT_APP_API_URL}/project/addteam/${arr._id}`, newTeam, {
             headers: { Authorization: `Bearer ${token}` }
         })
         
@@ -70,7 +70,7 @@ function Pinfo() {
         const token = localStorage.getItem("token");
         if (link.name && link.url) {
             const newlink={name:link.name,url:link.url}
-            axios.patch(`http://localhost:5000/project/addlink/${arr._id}`, newlink, {
+            axios.patch(`${process.env.REACT_APP_API_URL}/project/addlink/${arr._id}`, newlink, {
                 headers: { Authorization: `Bearer ${token}` }
             })
             setShowAddLink(false); // Hide input fields after adding
@@ -82,7 +82,7 @@ function Pinfo() {
     
         // Send a PATCH request to update the task's done status
         axios.patch(
-            `http://localhost:5000/project/taskdone/${arr._id}`,
+            `${process.env.REACT_APP_API_URL}/taskdone/${arr._id}`,
             { tid, status: isChecked }, // Send taskId and updated done status
             {
                 headers: { Authorization: `Bearer ${token}` },

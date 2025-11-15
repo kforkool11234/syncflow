@@ -66,7 +66,7 @@ function Header() {
             ) : (
                 <div className="flex items-center space-x-4">
                     <Link 
-                        to="/login" 
+                        to="registration/login" 
                         className="px-6 py-2 text-gray-600 hover:text-indigo-600 font-medium transition-colors duration-200"
                     >
                         Login

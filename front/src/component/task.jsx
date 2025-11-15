@@ -23,7 +23,7 @@ const TaskList = () => {
         const fetchTasks = async () => {
             try {
                 const userId = get_idFromToken(token);
-                const response = await axios.get(`http://localhost:5000/task/gettask?userId=${userId}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/task/gettask?userId=${userId}`);
                 setTasks(response.data);
                 setLoading(false);
             } catch (err) {
@@ -58,7 +58,7 @@ const TaskList = () => {
     // Function to mark a task as done
     const handleMarkAsDone = async (taskId) => {
         try {
-            await axios.patch(`http://localhost:5000/task/updatetask/${taskId}`, { done: true }, {
+            await axios.patch(`${process.env.REACT_APP_API_URL}/task/updatetask/${taskId}`, { done: true }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             // Update local state to reflect the change

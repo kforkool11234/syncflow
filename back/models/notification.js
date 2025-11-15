@@ -6,7 +6,6 @@ const notificationSchema = new mongoose.Schema({
   chat: { type: mongoose.Schema.Types.ObjectId, ref: "Chat" },
   message: { type: mongoose.Schema.Types.ObjectId, ref: "Message" },
   type: { type: String, default: "message" },
-  // No 'read' field needed if deleting immediately
 }, { timestamps: true });
 
 export default mongoose.models.Notification || mongoose.model("Notification", notificationSchema);

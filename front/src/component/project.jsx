@@ -21,7 +21,7 @@ function Project() {
     useEffect(() => {
         const username = getUsernameFromToken(token);
         if (username) {
-            axios.get('http://localhost:5000/project', {
+            axios.get(`${process.env.REACT_APP_API_URL}/project`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
                 .then((res) => {

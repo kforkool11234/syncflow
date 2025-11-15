@@ -9,7 +9,7 @@ function Signup() {
     const handleSignup = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:5000/registration/signup", { username, password, displayName: displayName });
+            await axios.post(`${process.env.REACT_APP_API_URL}/registration/signup`, { username, password, displayName: displayName });
             alert("Signup successful!");
             console.log(username, password, displayName)
         } catch (error) {

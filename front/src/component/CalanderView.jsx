@@ -40,7 +40,7 @@ const CalendarView = () => {
                 const userId = get_idFromToken(token);
                 const un = getusermnameFromToken(token);
                 // Include username in the request
-                const response = await axios.get(`http://localhost:5000/getCalendarData?userId=${userId}&un=${un}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/getCalendarData?userId=${userId}&un=${un}`);
                 
                 // Format events correctly
                 const formattedEvents = response.data.map(event => ({

@@ -22,7 +22,7 @@ function Chat() {
     const userId = getUserIdFromToken(token);
     if (userId) {
       axios
-        .get("http://localhost:5000/chat", {
+        .get(`${process.env.REACT_APP_API_URL}/chat`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
@@ -37,7 +37,7 @@ function Chat() {
   // New: Handle chat click, delete notifications then navigate
   const handleChatClick = async (chatId) => {
     try {
-      await axios.delete(`http://localhost:5000/notifications/chat/${chatId}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/notifications/chat/${chatId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });      
       // After deletion, navigate to the chat page
