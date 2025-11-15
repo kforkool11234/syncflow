@@ -8,7 +8,7 @@ const authenticateJWT = async (req, res, next) => {
         return res.sendStatus(403); // Forbidden
     }
 
-    jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret', async (err, user) => {
+    jwt.verify(token, process.env.JWT_SECRET, async (err, user) => {
         if (err) {
             return res.sendStatus(403); // Forbidden
         }
