@@ -5,7 +5,9 @@ import { connectDB } from './config/db.js';
 import { socketHandler } from './socket/index.js';
 
 connectDB();
-
+app.use(cors({
+  origin: process.env.CLIENT_URL
+}));
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
