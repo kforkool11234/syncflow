@@ -82,7 +82,7 @@ function Pinfo() {
     
         // Send a PATCH request to update the task's done status
         axios.patch(
-            `${process.env.REACT_APP_API_URL}/taskdone/${arr._id}`,
+            `${process.env.REACT_APP_API_URL}/project/taskdone/${arr._id}`,
             { tid, status: isChecked }, // Send taskId and updated done status
             {
                 headers: { Authorization: `Bearer ${token}` },
