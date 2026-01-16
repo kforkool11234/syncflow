@@ -41,7 +41,7 @@ const CalendarView = () => {
                 const un = getusermnameFromToken(token);
                 // Include username in the request
                 const response = await axios.get(`${process.env.REACT_APP_API_URL}/getCalendarData?userId=${userId}&un=${un}`);
-                
+
                 // Format events correctly
                 const formattedEvents = response.data.map(event => ({
                     id: event.id,
@@ -54,7 +54,7 @@ const CalendarView = () => {
                 }));
 
                 // Filter for pending tasks only
-                const filteredEvents = formattedEvents.filter(event => 
+                const filteredEvents = formattedEvents.filter(event =>
                     !(event.type === 'task' && event.done) // Exclude completed tasks
                 );
 
@@ -81,54 +81,69 @@ const CalendarView = () => {
     // Define styles based on event type
     const eventStyleGetter = (event) => {
         let backgroundColor;
-        
+
         switch (event.type) {
             case 'task':
-                backgroundColor = '#ADD8E6'; // Light blue for tasks
+                backgroundColor = '#6366f1'; // Indigo-500
                 break;
             case 'project':
-                backgroundColor = '#00008B'; // Dark blue for projects
+                backgroundColor = '#3b82f6'; // Blue-500
                 break;
             default:
-                backgroundColor = '#ffffff'; // Default color if needed
+                backgroundColor = '#8b5cf6'; // Purple-500
         }
 
         return {
             style: {
                 backgroundColor,
-                borderRadius: '5px',
-                opacity: 0.8,
+                borderRadius: '8px',
+                opacity: 0.9,
                 color: 'white',
-                border: '0px',
+                border: 'none',
                 display: 'block',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                fontSize: '0.85rem',
+                padding: '2px 5px',
             },
         };
     };
 
-    if (loading) return <div className="text-center text-gray-500">Loading...</div>;
-    if (error) return <div className="text-red-500">{error}</div>;
+    if (loading) return (
+        <div className="flex justify-center items-center h-screen bg-gray-50">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
+        </div>
+    );
+    if (error) return <div className="text-red-500 text-center mt-10">{error}</div>;
 
     return (
-        <div className='content'>
-            <div className="p-6 bg-gray-800 rounded-lg shadow-md w-11/12">
-            <h2 className="text-2xl font-bold text-white mb-4">Task and Project Calendar</h2>
-            <div style={{ height: 500 }}>
-                <Calendar
-                    localizer={localizer}
-                    events={events}
-                    startAccessor="start"
-                    endAccessor="end"
-                    style={{ height: 500 }}
-                    defaultView="month"
-                    views={['month']}
-                    popup
-                    onSelectEvent={handleSelectEvent}
-                    eventPropGetter={eventStyleGetter} // Apply styles based on event type
-                />
+        <div className='content flex flex-col items-center min-h-screen pt-28 pb-12 px-4'>
+            <div className="bg-white/95 backdrop-blur-3xl p-6 md:p-8 rounded-3xl shadow-2xl border border-white/20 w-full max-w-6xl">
+                <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-100">
+                    <div>
+                        <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                            Task & Project Calendar
+                        </h2>
+                        <p className="text-gray-500 mt-1 text-sm">Visualize your timeline and deadlines</p>
+                    </div>
+                </div>
+
+                <div className="h-[600px] bg-white rounded-2xl shadow-inner p-4 border border-gray-100">
+                    <Calendar
+                        localizer={localizer}
+                        events={events}
+                        startAccessor="start"
+                        endAccessor="end"
+                        style={{ height: '100%' }}
+                        defaultView="month"
+                        views={['month', 'week', 'agenda']} // Added more views for better utility
+                        popup
+                        onSelectEvent={handleSelectEvent}
+                        eventPropGetter={eventStyleGetter}
+                        className="custom-calendar" // Add custom class if needed for specific overrides
+                    />
+                </div>
             </div>
         </div>
-        </div>
-        
     );
 };
 
