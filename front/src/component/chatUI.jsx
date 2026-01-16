@@ -100,7 +100,7 @@ const ChatUI = () => {
   }, [isConnected, fetchMessages]);
 
   useEffect(() => {
-    const id = params.cid;
+    const id = cid;
     socket.emit('join', id);
 
     // Initial fetch
@@ -112,7 +112,7 @@ const ChatUI = () => {
     });
 
     return () => socket.off('receiveMessage');
-  }, [params.cid, channel, fetchMessages]);
+  }, [cid, channel, fetchMessages]);
 
   useEffect(() => {
     socket.on('receiveTask', (newTask) => {
@@ -141,7 +141,7 @@ const ChatUI = () => {
   };
 
   const handleSendMessage = async () => {
-    const id = params.cid;
+    const id = cid;
 
     if (channel === 'task') {
       if (!isAdmin) {
