@@ -80,7 +80,7 @@ function PForm() {
     }
 
     return (
-        <div className="content flex justify-center items-center min-h-screen py-12 px-4">
+        <div className="content flex justify-center items-start min-h-screen pt-22 pb-12 px-4">
             <form className="bg-white/95 backdrop-blur-3xl p-8 rounded-3xl shadow-2xl border border-white/20 max-w-2xl w-full">
                 <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 mb-8 border-b border-gray-100 pb-4">
                     Create New Project
