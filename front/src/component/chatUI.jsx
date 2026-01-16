@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { SendHorizontal } from 'lucide-react';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
@@ -72,25 +72,21 @@ const ChatUI = () => {
     };
   }, []);
 
-  const fetchMessages = () => {
+  const fetchMessages = useCallback(() => {
     const id = params.cid;
     axios.get(`${process.env.REACT_APP_API_URL}/chat/getchat?chatid=${id}&channel=${channel}`, {
       headers: { Authorization: `Bearer ${token}` },
     }).then((res) => {
-      // Simple comparison to avoid full re-render if nothing changed could be added here
-      // For now, we update if we have new messages or to sync state
-      // To avoid jitter, maybe check length or last message ID
-      // But for fallback, full update is safer for consistency
       setMessages(res.data.message);
-      // Only update details if they are empty
-      if (udetails.length === 0) setUdetails(res.data.udetails);
-      if (!cname) setCname(res.data.cn);
+      // Only update details if they are empty using functional updates to keep dependency stable
+      setUdetails(prev => prev.length === 0 ? res.data.udetails : prev);
+      setCname(prev => !prev ? res.data.cn : prev);
 
       const currentUserId = get_idFromToken(token);
       const adminUserIds = res.data.admin
       setIsAdmin(adminUserIds.includes(currentUserId));
     });
-  };
+  }, [params.cid, channel]);
 
   // Polling effect
   useEffect(() => {
@@ -101,7 +97,7 @@ const ChatUI = () => {
 
       return () => clearInterval(interval);
     }
-  }, [isConnected, params.cid, channel]);
+  }, [isConnected, fetchMessages]);
 
   useEffect(() => {
     const id = params.cid;
@@ -116,7 +112,7 @@ const ChatUI = () => {
     });
 
     return () => socket.off('receiveMessage');
-  }, [params, channel]);
+  }, [params.cid, channel, fetchMessages]);
 
   useEffect(() => {
     socket.on('receiveTask', (newTask) => {
