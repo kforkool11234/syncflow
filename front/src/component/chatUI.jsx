@@ -16,7 +16,7 @@ const socket = io(`${process.env.REACT_APP_API_URL}`, {
 })
 
 const ChatUI = () => {
-  const params = useParams();
+  const { cid } = useParams();
   const [showMembers, setShowMembers] = useState(false);
   const [entry, setEntry] = useState('');
   const [udetails, setUdetails] = useState([]);
@@ -27,8 +27,6 @@ const ChatUI = () => {
   const [dueDate, setDueDate] = useState(null); // Due date for task
   const [taskDescription, setTaskDescription] = useState(''); // Task description
   const [isAdmin, setIsAdmin] = useState(false); // Check if user is admin
-
-
 
   function get_idFromToken(token) {
     if (!token) {
@@ -73,20 +71,22 @@ const ChatUI = () => {
   }, []);
 
   const fetchMessages = useCallback(() => {
-    const id = params.cid;
-    axios.get(`${process.env.REACT_APP_API_URL}/chat/getchat?chatid=${id}&channel=${channel}`, {
+    if (!cid) return; // Guard clause
+
+    axios.get(`${process.env.REACT_APP_API_URL}/chat/getchat?chatid=${cid}&channel=${channel}`, {
       headers: { Authorization: `Bearer ${token}` },
     }).then((res) => {
-      setMessages(res.data.message);
+      setMessages(res.data.message || []); // Default to empty array if undefined
+
       // Only update details if they are empty using functional updates to keep dependency stable
       setUdetails(prev => prev.length === 0 ? res.data.udetails : prev);
       setCname(prev => !prev ? res.data.cn : prev);
 
       const currentUserId = get_idFromToken(token);
-      const adminUserIds = res.data.admin
+      const adminUserIds = res.data.admin || [];
       setIsAdmin(adminUserIds.includes(currentUserId));
-    });
-  }, [params.cid, channel]);
+    }).catch(err => console.error("Error fetching chat:", err));
+  }, [cid, channel]);
 
   // Polling effect
   useEffect(() => {
