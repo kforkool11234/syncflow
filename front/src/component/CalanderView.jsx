@@ -117,17 +117,17 @@ const CalendarView = () => {
 
     return (
         <div className='content flex flex-col items-center min-h-screen pt-28 pb-12 px-4'>
-            <div className="bg-white/95 backdrop-blur-3xl p-6 md:p-8 rounded-3xl shadow-2xl border border-white/20 w-full max-w-6xl">
-                <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-100">
+            <div className="bg-white/95 dark:bg-gray-900/90 backdrop-blur-3xl p-6 md:p-8 rounded-3xl shadow-2xl border border-white/20 dark:border-gray-700/30 w-full max-w-6xl transition-colors duration-300">
+                <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-100 dark:border-gray-700/50">
                     <div>
                         <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
                             Task & Project Calendar
                         </h2>
-                        <p className="text-gray-500 mt-1 text-sm">Visualize your timeline and deadlines</p>
+                        <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">Visualize your timeline and deadlines</p>
                     </div>
                 </div>
 
-                <div className="h-[600px] bg-white rounded-2xl shadow-inner p-4 border border-gray-100">
+                <div className="h-[600px] bg-white dark:bg-gray-800/50 rounded-2xl shadow-inner p-4 border border-gray-100 dark:border-gray-700/30 text-gray-800 dark:text-gray-200">
                     <Calendar
                         localizer={localizer}
                         events={events}
@@ -135,11 +135,11 @@ const CalendarView = () => {
                         endAccessor="end"
                         style={{ height: '100%' }}
                         defaultView="month"
-                        views={['month', 'week', 'agenda']} // Added more views for better utility
+                        views={['month', 'week', 'agenda']}
                         popup
                         onSelectEvent={handleSelectEvent}
                         eventPropGetter={eventStyleGetter}
-                        className="custom-calendar" // Add custom class if needed for specific overrides
+                        className="custom-calendar"
                     />
                 </div>
             </div>

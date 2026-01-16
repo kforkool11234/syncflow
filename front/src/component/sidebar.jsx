@@ -2,9 +2,9 @@ import React from "react"
 import { Link, useLocation } from "react-router-dom";
 import "./index.css"
 
-function Sidebar(){
+function Sidebar() {
     const location = useLocation();
-    
+
     const navItems = [
         { to: '/project', label: 'Projects', icon: '📋' },
         { to: '/task', label: 'Tasks', icon: '✓' },
@@ -12,28 +12,28 @@ function Sidebar(){
         { to: '/calender', label: 'Calendar', icon: '📅' }
     ];
 
-    return(
+    return (
         <div className="sidebar">
             <div className="px-6 py-4 mb-8">
                 <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                     SyncFlow
                 </h2>
             </div>
-            
+
             <nav className="flex-1 px-4">
                 {navItems.map((item) => (
-                    <Link 
+                    <Link
                         key={item.to}
-                        to={item.to} 
-                        className={`item ${location.pathname === item.to ? 'bg-indigo-50 text-indigo-600 border-l-4 border-indigo-600' : ''}`}
+                        to={item.to}
+                        className={`item ${location.pathname === item.to ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 border-l-4 border-indigo-600 dark:border-indigo-500' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
                     >
                         <span className="text-xl mr-3">{item.icon}</span>
                         <span className="font-medium">{item.label}</span>
                     </Link>
                 ))}
             </nav>
-            
-            <div className="px-6 py-4 text-xs text-gray-400 border-t border-gray-100">
+
+            <div className="px-6 py-4 text-xs text-gray-400 dark:text-gray-500 border-t border-gray-100 dark:border-gray-800">
                 <p>© 2024 SyncFlow</p>
             </div>
         </div>

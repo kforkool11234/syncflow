@@ -15,6 +15,7 @@ import TaskList from "./task";
 import CalendarView from "./CalanderView";
 import Layout from "./layout";
 import Layout2 from "./reg_layout";
+import { ThemeProvider } from "../context/ThemeContext";
 function App() {
 
   return (
@@ -44,10 +45,13 @@ function App() {
   );
 }
 
-// Wrap App component with Router
+
+// Wrap App component with Router and ThemeProvider
 const WrappedApp = () => (
   <Router>
-    <App />
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
   </Router>
 );
 

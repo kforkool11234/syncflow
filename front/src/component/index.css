@@ -4,11 +4,17 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.dark body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
 }
 
 .whole {
@@ -38,6 +44,10 @@ html, body {
     padding: 2rem 0;
 }
 
+.dark .sidebar {
+    background: rgba(15, 23, 42, 0.95);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
 
 .main {
     position: fixed;
@@ -57,6 +67,11 @@ html, body {
     padding: 0 2rem;
     z-index: 100;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+}
+
+.dark .main {
+    background: rgba(15, 23, 42, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 
@@ -103,10 +118,10 @@ html, body {
 
 .content {
     display: flex;
-    grid-column: 2 / 3; 
-    grid-row: 2 / 3; 
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
     height: 100vh;
-    overflow-y: auto; 
+    overflow-y: auto;
     padding-top: 80px;
     padding-left: 2rem;
     padding-right: 2rem;
@@ -147,15 +162,15 @@ html, body {
     .whole {
         grid-template-columns: 1fr;
     }
-    
+
     .sidebar {
         display: none;
     }
-    
+
     .main {
         left: 0;
     }
-    
+
     .content {
         padding-left: 1rem;
         padding-right: 1rem;
