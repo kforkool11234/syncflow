@@ -7,6 +7,12 @@ function Login() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
+    React.useEffect(() => {
+        if (localStorage.getItem("token")) {
+            navigate("/project");
+        }
+    }, [navigate]);
+
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
