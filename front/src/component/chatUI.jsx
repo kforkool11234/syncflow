@@ -51,34 +51,68 @@ const ChatUI = () => {
   const name = getdnFromToken(token);
   const sender = get_idFromToken(token);
 
+  const [isConnected, setIsConnected] = useState(socket.connected);
+
   const toggleMembers = () => {
     setShowMembers((prev) => !prev);
   };
 
   useEffect(() => {
-    const id = params.cid;
-    socket.emit('join', id);
+    const onConnect = () => setIsConnected(true);
+    const onDisconnect = () => setIsConnected(false);
 
-    // Fetch initial messages from the backend
-    console.log(channel)
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+    socket.on('connect_error', onDisconnect);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+      socket.off('connect_error', onDisconnect);
+    };
+  }, []);
+
+  const fetchMessages = () => {
+    const id = params.cid;
     axios.get(`${process.env.REACT_APP_API_URL}/chat/getchat?chatid=${id}&channel=${channel}`, {
       headers: { Authorization: `Bearer ${token}` },
     }).then((res) => {
-      setMessages(res.data.message); // Load previous messages (tasks or regular)
-      setUdetails(res.data.udetails); // Load user details
-      setCname(res.data.cn); // Load chat name
+      // Simple comparison to avoid full re-render if nothing changed could be added here
+      // For now, we update if we have new messages or to sync state
+      // To avoid jitter, maybe check length or last message ID
+      // But for fallback, full update is safer for consistency
+      setMessages(res.data.message);
+      // Only update details if they are empty
+      if (udetails.length === 0) setUdetails(res.data.udetails);
+      if (!cname) setCname(res.data.cn);
 
-      // Check if the current user is an admin
       const currentUserId = get_idFromToken(token);
       const adminUserIds = res.data.admin
       setIsAdmin(adminUserIds.includes(currentUserId));
-
-      console.log(res.data);
     });
+  };
+
+  // Polling effect
+  useEffect(() => {
+    if (!isConnected) {
+      const interval = setInterval(() => {
+        fetchMessages();
+      }, 3000); // Poll every 3 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [isConnected, params.cid, channel]);
+
+  useEffect(() => {
+    const id = params.cid;
+    socket.emit('join', id);
+
+    // Initial fetch
+    fetchMessages();
 
     socket.on('receiveMessage', (messageData) => {
       console.log("Receiving message");
-      setMessages(prev => [...prev, messageData]); // Append new messages
+      setMessages(prev => [...prev, messageData]);
     });
 
     return () => socket.off('receiveMessage');
@@ -86,11 +120,10 @@ const ChatUI = () => {
 
   useEffect(() => {
     socket.on('receiveTask', (newTask) => {
-      setMessages(prev => [...prev, { ...newTask, type: 'task' }]); // Add logic for displaying tasks
+      setMessages(prev => [...prev, { ...newTask, type: 'task' }]);
     });
 
     socket.on('taskUpdated', (updatedTask) => {
-      // Logic for updating the displayed task in your UI if needed
       setMessages(prev => prev.map(msg => msg._id === updatedTask._id ? updatedTask : msg));
     });
 
@@ -101,10 +134,17 @@ const ChatUI = () => {
   }, []);
 
   const handleMarkAsDone = (taskId) => {
-    socket.emit('markTaskAsDone', { taskId });
+    if (isConnected) {
+      socket.emit('markTaskAsDone', { taskId });
+    } else {
+      // Fallback or alert for tasks? 
+      // For now let's keep tasks on socket mostly, or implement HTTP for tasks too later.
+      // Assuming user only asked for chat fallback primarily.
+      alert("Real-time connection lost. Task updates might not reflect immediately.");
+    }
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     const id = params.cid;
 
     if (channel === 'task') {
@@ -118,22 +158,25 @@ const ChatUI = () => {
         return;
       }
 
-      const taskData = {
-        entry: taskDescription,
-        sender,
-        chat: id,
-        channel,
-        name,
-        assignedTo,
-        dueDate,
-      };
+      // Socket only for tasks for now as backend controller doesn't support tasks yet
+      if (isConnected) {
+        const taskData = {
+          entry: taskDescription,
+          sender,
+          chat: id,
+          channel,
+          name,
+          assignedTo,
+          dueDate,
+        };
+        socket.emit('sendMessage', { id, messageData: taskData });
 
-      socket.emit('sendMessage', { id, messageData: taskData });
-
-      // Reset fields after sending
-      setTaskDescription('');
-      setAssignedTo('');
-      setDueDate(null);
+        setTaskDescription('');
+        setAssignedTo('');
+        setDueDate(null);
+      } else {
+        alert("Cannot create tasks while offline/polling mode.");
+      }
 
     } else if (entry.trim()) {
       console.log('Message sent:', entry);
@@ -146,9 +189,22 @@ const ChatUI = () => {
         name,
       };
 
-      socket.emit('sendMessage', { id, messageData });
-
-      setEntry(''); // Clear input after sending
+      if (isConnected) {
+        socket.emit('sendMessage', { id, messageData });
+        setEntry('');
+      } else {
+        try {
+          const res = await axios.post(`${process.env.REACT_APP_API_URL}/chat/send`,
+            { id, messageData },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          setMessages(prev => [...prev, res.data]);
+          setEntry('');
+        } catch (err) {
+          console.error("Failed to send message via HTTP", err);
+          alert("Failed to send message. Please try again.");
+        }
+      }
     }
   };
 
