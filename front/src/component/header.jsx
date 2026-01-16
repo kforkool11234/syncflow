@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./index.css";
 
-function Header() {
+function Header({ fullWidth = false }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const token = localStorage.getItem("token");
 
@@ -12,13 +12,13 @@ function Header() {
     };
 
     return (
-        <div className="main">
+        <div className="main" style={fullWidth ? { left: 0 } : {}}>
             <div className="flex items-center">
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                     Welcome back
                 </h1>
             </div>
-            
+
             {token ? (
                 <div className="relative">
                     <button
@@ -39,8 +39,8 @@ function Header() {
                     {isDropdownOpen && (
                         <div className="absolute right-0 mt-2 w-56 bg-white/95 backdrop-blur-lg border border-white/20 rounded-2xl shadow-2xl z-50 overflow-hidden">
                             <div className="py-2">
-                                <Link 
-                                    to="/profile" 
+                                <Link
+                                    to="/profile"
                                     className="flex items-center px-4 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-200"
                                     onClick={() => setIsDropdownOpen(false)}
                                 >
@@ -50,8 +50,8 @@ function Header() {
                                     Profile Settings
                                 </Link>
                                 <hr className="border-gray-100 my-1" />
-                                <button 
-                                    onClick={handleLogout} 
+                                <button
+                                    onClick={handleLogout}
                                     className="flex items-center w-full px-4 py-3 text-red-600 hover:bg-red-50 transition-colors duration-200"
                                 >
                                     <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,14 +65,14 @@ function Header() {
                 </div>
             ) : (
                 <div className="flex items-center space-x-4">
-                    <Link 
-                        to="registration/login" 
+                    <Link
+                        to="/registration/login"
                         className="px-6 py-2 text-gray-600 hover:text-indigo-600 font-medium transition-colors duration-200"
                     >
                         Login
                     </Link>
-                    <Link 
-                        to="/signup" 
+                    <Link
+                        to="/registration/signup"
                         className="px-6 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-full hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 font-medium"
                     >
                         Sign Up

@@ -19,7 +19,7 @@ function Signup() {
     };
 
     return (
-        <div className="content flex items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4">
             <div className="w-full max-w-md">
                 <div className="bg-white/95 backdrop-blur-lg p-8 rounded-3xl shadow-2xl border border-white/20">
                     <div className="text-center mb-8">
@@ -44,7 +44,7 @@ function Signup() {
                                 className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 bg-gray-50/50 hover:bg-white"
                             />
                         </div>
-                        
+
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="displayName">
                                 Display Name
@@ -59,7 +59,7 @@ function Signup() {
                                 className="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 bg-gray-50/50 hover:bg-white"
                             />
                         </div>
-                        
+
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="password">
                                 Password
@@ -86,7 +86,7 @@ function Signup() {
                     <div className="mt-6 text-center">
                         <p className="text-gray-600">
                             Already have an account?{' '}
-                            <a href="/login" className="text-indigo-600 hover:text-indigo-700 font-medium transition-colors duration-200">
+                            <a href="/registration/login" className="text-indigo-600 hover:text-indigo-700 font-medium transition-colors duration-200">
                                 Sign in here
                             </a>
                         </p>

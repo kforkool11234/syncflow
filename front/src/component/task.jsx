@@ -9,7 +9,7 @@ const TaskList = () => {
     const [sortOrder, setSortOrder] = useState('asc'); // Default sort order
     const [statusFilter, setStatusFilter] = useState('all'); // Default status filter
 
-    const token = localStorage.getItem("token"); 
+    const token = localStorage.getItem("token");
     function get_idFromToken(token) {
         if (!token) {
             console.log("No token found");
@@ -73,66 +73,127 @@ const TaskList = () => {
         }
     };
 
-    if (loading) return <div className="text-center text-gray-500">Loading...</div>;
-    if (error) return <div className="text-red-500">{error}</div>;
+    if (loading) return (
+        <div className="flex justify-center items-center h-screen">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        </div>
+    );
+    if (error) return (
+        <div className="flex justify-center items-center h-screen">
+            <div className="text-red-500 bg-red-100 p-4 rounded-xl shadow-sm">{error}</div>
+        </div>
+    );
 
     return (
-        <div className='content ml-20'>
-            <div className="w-10/12">
-                <h2 className="text-2xl font-bold text-white mb-4">Assigned Tasks</h2>
-                
-                {/* Sort and Filter Options Side by Side */}
-                <div className="flex justify-between mb-4">
-                    {/* Sort Order Dropdown */}
-                    <label className="block text-gray-300 mr-4">
-                        Sort by:
-                        <select 
-                            value={sortOrder} 
-                            onChange={(e) => setSortOrder(e.target.value)} 
-                            className="mt-1 block w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring focus:ring-blue-500"
-                        >
-                            <option value="asc">Ascending due date</option>
-                            <option value="desc">Descending due date</option>
-                            <option value="latest">Latest</option>
-                        </select>
-                    </label>
+        <div className="content flex-col p-8">
+            <div className="max-w-6xl mx-auto w-full">
+                <div className="bg-white/95 backdrop-blur-3xl rounded-3xl shadow-2xl border border-white/20 p-8">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
+                        <div>
+                            <h2 className="text-3xl font-bold text-gray-900 mb-2">Assigned Tasks</h2>
+                            <p className="text-gray-600">Track and manage your project deliverables</p>
+                        </div>
 
-                    {/* Status Filter Dropdown */}
-                    <label className="block text-gray-300">
-                        Filter by Status:
-                        <select 
-                            value={statusFilter} 
-                            onChange={(e) => setStatusFilter(e.target.value)} 
-                            className="mt-1 block w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring focus:ring-blue-500"
-                        >
-                            <option value="all">All</option>
-                            <option value="completed">Completed</option>
-                            <option value="pending">Pending</option>
-                        </select>
-                    </label>
-                </div>
-
-                {/* Task List */}
-                <ul className="space-y-4">
-                    {filteredTasks.map(task => (
-                        <li key={task._id} className="p-4 bg-gray-700 rounded-md shadow hover:bg-gray-600 transition duration-200">
-                            <strong className="text-white">Project:</strong> {task.chat.chatName} <br />
-                            <strong className="text-white">Description:</strong> {task.description} <br />
-                            <strong className="text-white">Assigned To:</strong> {task.to.displayName} <br />
-                            <strong className="text-white">Due Date:</strong> {new Date(task.due_date).toLocaleDateString()} <br />
-                            <strong className="text-white">Status:</strong> {task.done ? "Completed" : "Pending"}<br />
-                            {/* Show Mark as Done button only if the task is pending */}
-                            {!task.done && (
-                                <button 
-                                    onClick={() => handleMarkAsDone(task._id)} 
-                                    className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 transition duration-200"
+                        {/* Sort and Filter Options */}
+                        <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+                            <div className="relative group">
+                                <select
+                                    value={sortOrder}
+                                    onChange={(e) => setSortOrder(e.target.value)}
+                                    className="appearance-none w-full sm:w-48 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all cursor-pointer hover:bg-white"
                                 >
-                                    Mark as Done
-                                </button>
-                            )}
-                        </li>
-                    ))}
-                </ul>
+                                    <option value="asc">↑ Due Date (Earliest)</option>
+                                    <option value="desc">↓ Due Date (Latest)</option>
+                                    <option value="latest">Newest Assigned</option>
+                                </select>
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                            </div>
+
+                            <div className="relative group">
+                                <select
+                                    value={statusFilter}
+                                    onChange={(e) => setStatusFilter(e.target.value)}
+                                    className="appearance-none w-full sm:w-48 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all cursor-pointer hover:bg-white"
+                                >
+                                    <option value="all">All Status</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="pending">Pending</option>
+                                </select>
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Task List */}
+                    <div className="grid gap-4">
+                        {filteredTasks.length > 0 ? (
+                            filteredTasks.map(task => (
+                                <div
+                                    key={task._id}
+                                    className={`group p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg hover:scale-[1.01] ${task.done
+                                            ? 'bg-gray-50 border-gray-100 opacity-75'
+                                            : 'bg-white border-gray-100 hover:border-indigo-200 shadow-sm'
+                                        }`}
+                                >
+                                    <div className="flex flex-col sm:flex-row justify-between gap-4">
+                                        <div className="flex-1 space-y-3">
+                                            <div className="flex items-center gap-3">
+                                                <span className={`px-3 py-1 rounded-full text-xs font-semibold tracking-wide ${task.done
+                                                        ? 'bg-green-100 text-green-700'
+                                                        : 'bg-indigo-100 text-indigo-700'
+                                                    }`}>
+                                                    {task.done ? 'COMPLETED' : 'PENDING'}
+                                                </span>
+                                                <h3 className="text-lg font-bold text-gray-900 line-clamp-1">{task.chat.chatName}</h3>
+                                            </div>
+
+                                            <p className="text-gray-600 leading-relaxed max-w-2xl">
+                                                {task.description}
+                                            </p>
+
+                                            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 pt-2">
+                                                <div className="flex items-center gap-2">
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                                    <span className="font-medium text-gray-700">Assigned by:</span> {task.to.displayName}
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                    <span className={`font-medium ${new Date(task.due_date) < new Date() && !task.done ? 'text-red-600' : 'text-gray-700'}`}>
+                                                        Due: {new Date(task.due_date).toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center">
+                                            {!task.done && (
+                                                <button
+                                                    onClick={() => handleMarkAsDone(task._id)}
+                                                    className="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-md hover:shadow-indigo-200 flex items-center justify-center gap-2 active:scale-95"
+                                                >
+                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                                                    Mark Done
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="text-center py-20 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                                <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                                <h3 className="mt-2 text-sm font-medium text-gray-900">No tasks found</h3>
+                                <p className="mt-1 text-sm text-gray-500">
+                                    {statusFilter !== 'all' ? `No ${statusFilter} tasks available.` : 'You have no assigned tasks yet.'}
+                                </p>
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );

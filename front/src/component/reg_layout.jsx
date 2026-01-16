@@ -4,14 +4,11 @@ import Header from "./header";
 const layout = () => {
   return (
     <>
-      <div className="whole">
-        <div className="main">
-        <Header />
+      <div className="min-h-screen bg-transparent">
+        <Header fullWidth={true} />
+        <div className="pt-[80px]">
+          <Outlet />
         </div>
-        <div className="content">
-        <Outlet />
-        </div>
-        
       </div>
     </>
   );

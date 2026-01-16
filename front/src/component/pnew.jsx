@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -21,7 +21,7 @@ function PForm() {
         deadline: null, // Date object for React Datepicker
         githubLink: "",
         description: "",
-        priority:"normal"
+        priority: "normal"
     });
     const [task, setTask] = useState({
         name: "",
@@ -57,7 +57,7 @@ function PForm() {
 
         console.log("Processed Data:", data);
 
-        axios.post(`${process.env.REACT_APP_API_URL}/project/createproject`, data,{
+        axios.post(`${process.env.REACT_APP_API_URL}/project/createproject`, data, {
             headers: { Authorization: `Bearer ${token}` } // Include the token here
         })
             .then(() => navigate("/project"))
@@ -74,162 +74,209 @@ function PForm() {
         setTeam({ id: "", role: "" });
     };
 
-    const priority=(event)=>{
+    const priority = (event) => {
         setSelectedOption(event.target.value)
-        setBasicInfo({...basicInfo,priority:selectedOption})
+        setBasicInfo({ ...basicInfo, priority: selectedOption })
     }
 
     return (
-        <div className="content flex justify-center items-center min-h-screen mt-20">
-            <form className=" bg-gray-800 p-6 rounded-lg shadow-md max-w-2xl w-full pt-16">
-                <h2 className="text-xl font-bold text-white mb-4">Basic Info</h2>
+        <div className="content flex justify-center items-center min-h-screen py-12 px-4">
+            <form className="bg-white/95 backdrop-blur-3xl p-8 rounded-3xl shadow-2xl border border-white/20 max-w-2xl w-full">
+                <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 mb-8 border-b border-gray-100 pb-4">
+                    Create New Project
+                </h2>
 
-                <div className="flex space-x-4 mb-4">
-                    <label className="flex-1">
-                        <h3 className="text-lg text-gray-300">Project Name</h3>
-                        <input
-                            type="text"
-                            placeholder="Project Name"
-                            className="mt-1 block w-full p-2 rounded border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring focus:ring-blue-500"
-                            value={basicInfo.projectName}
-                            onChange={(e) => setBasicInfo({ ...basicInfo, projectName: e.target.value })}
-                            required
-                        />
-                    </label>
-                    <label className="flex-1">
-                        <h3 className="text-lg text-gray-300">Deadline</h3>
-                        <DatePicker
-                            selected={basicInfo.deadline}
-                            onChange={(date) => setBasicInfo({ ...basicInfo, deadline: date })}
-                            dateFormat="yyyy-MM-dd"
-                            className="mt-1 block w-full p-2 rounded border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring focus:ring-blue-500"
-                            placeholderText="Select deadline"
-                            required
-                        />
-                    </label>
-                    <label htmlFor="priority">Select Priority:</label>
-                         <select id="priority" value={selectedOption} onChange={priority}>
-                            <option value="normal">normal</option>
-                            <option value="high">high</option>
-                            <option value="normal">normal</option>
-                            <option value="low">low</option>
-                        </select>
+                <div className="space-y-6">
+                    {/* Basic Info Section */}
+                    <div>
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                            <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Basic Information
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label className="block">
+                                <span className="text-sm font-medium text-gray-700 mb-1 block">Project Name</span>
+                                <input
+                                    type="text"
+                                    placeholder="e.g. Website Redesign"
+                                    className="w-full p-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+                                    value={basicInfo.projectName}
+                                    onChange={(e) => setBasicInfo({ ...basicInfo, projectName: e.target.value })}
+                                    required
+                                />
+                            </label>
+
+                            <label className="block">
+                                <span className="text-sm font-medium text-gray-700 mb-1 block">Deadline</span>
+                                <DatePicker
+                                    selected={basicInfo.deadline}
+                                    onChange={(date) => setBasicInfo({ ...basicInfo, deadline: date })}
+                                    dateFormat="yyyy-MM-dd"
+                                    className="w-full p-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+                                    placeholderText="Select deadline"
+                                    required
+                                />
+                            </label>
+
+                            <label className="block">
+                                <span className="text-sm font-medium text-gray-700 mb-1 block">Priority</span>
+                                <div className="relative">
+                                    <select
+                                        id="priority"
+                                        value={selectedOption}
+                                        onChange={priority}
+                                        className="w-full p-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all appearance-none cursor-pointer"
+                                    >
+                                        <option value="normal">Normal</option>
+                                        <option value="high">High</option>
+                                        <option value="low">Low</option>
+                                    </select>
+                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label className="block">
+                                <span className="text-sm font-medium text-gray-700 mb-1 block">GitHub Link</span>
+                                <input
+                                    type="text"
+                                    placeholder="https://github.com/..."
+                                    className="w-full p-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+                                    value={basicInfo.githubLink}
+                                    onChange={(e) => setBasicInfo({ ...basicInfo, githubLink: e.target.value })}
+                                />
+                            </label>
+
+                            <label className="block md:col-span-2">
+                                <span className="text-sm font-medium text-gray-700 mb-1 block">Description</span>
+                                <textarea
+                                    placeholder="Brief description of the project goals and scope..."
+                                    className="w-full p-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+                                    rows="3"
+                                    value={basicInfo.description}
+                                    onChange={(e) => setBasicInfo({ ...basicInfo, description: e.target.value })}
+                                    required
+                                ></textarea>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div className="border-t border-gray-100 pt-6"></div>
+
+                    {/* Timeline Section */}
+                    <div>
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                            <svg className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Initial Timeline
+                        </h3>
+
+                        <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 mb-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <input
+                                    name="name"
+                                    placeholder="Task Name"
+                                    className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none bg-white"
+                                    value={task.name}
+                                    onChange={(e) => setTask({ ...task, name: e.target.value })}
+                                />
+                                <DatePicker
+                                    selected={task.deadline}
+                                    onChange={(date) => setTask({ ...task, deadline: date })}
+                                    dateFormat="yyyy-MM-dd"
+                                    className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none bg-white"
+                                    placeholderText="Task Deadline"
+                                />
+                                <textarea
+                                    name="description"
+                                    placeholder="Task Details"
+                                    className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none bg-white md:col-span-2"
+                                    rows="2"
+                                    value={task.description}
+                                    onChange={(e) => setTask({ ...task, description: e.target.value })}
+                                ></textarea>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={handleAddTimeline}
+                                className="w-full py-2 bg-indigo-100 text-indigo-700 hover:bg-indigo-200 font-semibold rounded-xl transition-all"
+                            >
+                                + Add to Timeline
+                            </button>
+                        </div>
+
+                        {timeline.length > 0 && (
+                            <ul className="space-y-2 mb-4">
+                                {timeline.map((item, index) => (
+                                    <li key={index} className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100 shadow-sm">
+                                        <span className="font-medium text-gray-800">{item.name}</span>
+                                        <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">{item.deadline?.toLocaleDateString()}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+
+                    <div className="border-t border-gray-100 pt-6"></div>
+
+                    {/* Team Members Section */}
+                    <div>
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                            <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            Team Members
+                        </h3>
+
+                        <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 mb-4">
+                            <div className="flex flex-col md:flex-row gap-4 mb-4">
+                                <input
+                                    name="id"
+                                    placeholder="Member ID / Username"
+                                    className="flex-1 p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none bg-white"
+                                    value={team.id}
+                                    onChange={(e) => setTeam({ ...team, id: e.target.value })}
+                                />
+                                <input
+                                    name="role"
+                                    placeholder="Role (e.g. Frontend Dev)"
+                                    className="flex-1 p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 outline-none bg-white"
+                                    value={team.role}
+                                    onChange={(e) => setTeam({ ...team, role: e.target.value })}
+                                />
+                            </div>
+                            <button
+                                type="button"
+                                onClick={handleAddTeamMember}
+                                className="w-full py-2 bg-green-100 text-green-700 hover:bg-green-200 font-semibold rounded-xl transition-all"
+                            >
+                                + Add Member
+                            </button>
+                        </div>
+
+                        {members.length > 0 && (
+                            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                {members.map((member, index) => (
+                                    <li key={index} className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-100 shadow-sm">
+                                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-green-400 to-teal-500 flex items-center justify-center text-white font-bold text-xs">
+                                            {member.id.charAt(0).toUpperCase()}
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-gray-800 text-sm">{member.id}</p>
+                                            <p className="text-xs text-gray-500">{member.role}</p>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={handleSave}
+                        className="w-full py-4 mt-8 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all transform duration-200"
+                    >
+                        Create Project
+                    </button>
                 </div>
-
-                <label className="block mb-4">
-                    <h3 className="text-lg text-gray-300">GitHub Link</h3>
-                    <input
-                        type="text"
-                        placeholder="Enter GitHub link"
-                        className="mt-1 block w-full p-2 rounded border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring focus:ring-blue-500"
-                        value={basicInfo.githubLink}
-                        onChange={(e) => setBasicInfo({ ...basicInfo, githubLink: e.target.value })}
-                    />
-                </label>
-
-                <label className="block mb-4">
-                    <h3 className="text-lg text-gray-300">Description</h3>
-                    <textarea
-                        placeholder="Enter description of the project"
-                        className="mt-1 block w-full p-2 rounded border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring focus:ring-blue-500"
-                        value={basicInfo.description}
-                        onChange={(e) => setBasicInfo({ ...basicInfo, description: e.target.value })}
-                        required
-                    ></textarea>
-                </label>
-
-                <h2 className="text-xl font-bold text-white mt-6 mb-4">Timeline:</h2>
-                <label className="block mb-4">
-                    <input
-                        name="name"
-                        placeholder="Name of task"
-                        className="mt-1 block w-full p-2 rounded border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring focus:ring-blue-500"
-                        value={task.name}
-                        onChange={(e) => setTask({ ...task, name: e.target.value })}
-                    />
-                    <textarea
-                        name="description"
-                        placeholder="Description of task"
-                        className="mt-1 block w-full p-2 rounded border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring focus:ring-blue-500"
-                        value={task.description}
-                        onChange={(e) => setTask({ ...task, description: e.target.value })}
-                    ></textarea>
-                    <DatePicker
-                        selected={task.deadline}
-                        onChange={(date) => setTask({ ...task, deadline: date })}
-                        dateFormat="yyyy-MM-dd"
-                        className="mt-1 block w-full p-2 rounded border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring focus:ring-blue-500"
-                        placeholderText="Select deadline"
-                        required
-                    />
-                </label>
-
-                <button
-                    type="button"
-                    onClick={handleAddTimeline}
-                    className="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                >
-                    Add Timeline
-                </button>
-
-                <ul className="mt-4 text-white">
-                    {timeline.map((item, index) => (
-                        <li key={index} className="mb-2">
-                            <strong>{item.name}</strong> (Deadline: {item.deadline?.toLocaleDateString()})
-                        </li>
-                    ))}
-                </ul>
-
-                <h2 className="text-xl font-bold text-white mt-6 mb-4">Team Member:</h2>
-
-                <div className="flex space-x-4 mb-4">
-                    <label className="flex-1">
-                        <h3 className="text-lg text-gray-300">Team Member ID</h3>
-                        <input
-                            name="id"
-                            placeholder="Add unique ID of team member"
-                            className="mt-1 block w-full p-2 rounded border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring focus:ring-blue-500"
-                            value={team.id}
-                            onChange={(e) => setTeam({ ...team, id: e.target.value })}
-                            required
-                        />
-                    </label>
-                    <label className="flex-1">
-                        <h3 className="text-lg text-gray-300">Role of Member/Team</h3>
-                        <input
-                            name="role"
-                            placeholder="Enter role/team of the member"
-                            className="mt-1 block w-full p-2 rounded border border-gray-600 bg-gray-700 text-white focus:outline-none focus:ring focus:ring-blue-500"
-                            value={team.role}
-                            onChange={(e) => setTeam({ ...team, role: e.target.value })}
-                            required
-                        />
-                    </label>
-                </div>
-
-                <button
-                    type="button"
-                    onClick={handleAddTeamMember}
-                    className="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                >
-                    Add Team Member
-                </button>
-
-                <ul className="mt-4 text-white">
-                    {members.map((member, index) => (
-                        <li key={index} className="mb-2">
-                            <strong>{member.id}</strong>: {member.role}
-                        </li>
-                    ))}
-                </ul>
-
-                <button
-                    type="button"
-                    onClick={handleSave}
-                    className="block mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                    Save
-                </button>
             </form>
         </div>
     );
