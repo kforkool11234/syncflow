@@ -1,10 +1,8 @@
 import React from "react";
-import Header from "./header";
 import {
   BrowserRouter as Router,
   Route,
   Routes,
-  useLocation,
 } from "react-router-dom";
 import Project from "./project";
 import Chat from "./chat";
@@ -18,7 +16,6 @@ import CalendarView from "./CalanderView";
 import Layout from "./layout";
 import Layout2 from "./reg_layout";
 function App() {
-  const location = useLocation(); // Get current location
 
   return (
     <div>

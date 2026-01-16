@@ -199,17 +199,16 @@ const ChatUI = () => {
         {/* Messages Area */}
         <div className="flex-grow p-4 sm:p-6 overflow-y-auto space-y-4 bg-gradient-to-b from-gray-50/50 to-white/50 custom-scrollbar">
           {messages.map((msg, index) => {
-            const isMe = msg.sender === sender || (msg.type === 'task' && msg.sender === sender);
             const isOwnMessage = msg.sender === sender;
 
             return (
               <div key={index} className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}>
                 <div
                   className={`max-w-[85%] sm:max-w-[70%] rounded-2xl p-4 shadow-sm relative group ${msg.type === 'task'
-                      ? 'bg-white border border-indigo-100 w-full sm:w-auto'
-                      : isOwnMessage
-                        ? 'bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-tr-none'
-                        : 'bg-white border border-gray-100 text-gray-800 rounded-tl-none'
+                    ? 'bg-white border border-indigo-100 w-full sm:w-auto'
+                    : isOwnMessage
+                      ? 'bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-tr-none'
+                      : 'bg-white border border-gray-100 text-gray-800 rounded-tl-none'
                     }`}
                 >
                   {msg.type === 'task' ? (
